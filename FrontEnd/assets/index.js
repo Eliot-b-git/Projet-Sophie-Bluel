@@ -140,17 +140,11 @@ async function figureJSONData() {
       }
 
       function deleteToken() {
-        const token = localStorage.getItem('token');
-        then(response => {
-          if (response.ok) {
-            localStorage.removeItem('token');
-            updateLoginButton();
-          } else {
-            throw new Error('Erreur lors de la suppression du token');
-          }
-        })
-        .catch(error => console.error(error));
+        localStorage.removeItem('token');
+        updateLoginButton();
       }
+
+  
 
       function updateLoginButton() {
         const loginButton = document.querySelector('#loginButton');
@@ -160,27 +154,61 @@ async function figureJSONData() {
           loginButton.addEventListener("click", deleteToken);
           addBanniereCreateur();
         } else {
-          loginButton.textContent = 'login';
-          loginButton.addEventListener("click", login);
-          loginButton.setAttribute('href', '/login');
           removeBanniereCreateur();
+          loginButton.textContent = 'login';
+          loginButton.setAttribute('href', './assets/login.html');
         }
       }
 
       function addBanniereCreateur() {
+        
         let header = document.querySelector('header');
         let banniere = document.querySelector('#banniereCreateur');
+        let modeEdition = document.createElement("divEdition");
+        let logopublier = document.createElement("logopublier");
+        let img = document.createElement('img');
+        let publier = document.createElement('divpublier');
+        let pagemodal = document.createElement('a')
+        
         banniere = document.createElement("div");
         banniere.id = "banniereCreateur";
-        banniere.textContent = "Mode Créateur";
+        
+        img.src = ".\assets\images\note-square-outlined-button-with-a-pencil.png";
+        
+        modeEdition.textContent = "Mode édition";
+        modeEdition.id = "modeEditions";
+
+        publier.id = "publier";
+        publier.textContent = "publier les changements";
+
+        pagemodal.id = 'lienmodal';
+        pagemodal.classList = 'js-modal';
+        pagemodal.href = '#modal1';
+
+        banniere.appendChild(pagemodal);
         header.prepend(banniere);
+        pagemodal.appendChild(img);
+        pagemodal.appendChild(logopublier);
+        logopublier.appendChild(modeEdition);
+        banniere.appendChild(publier);
       }
+
+      const openModal = function(e) {
+          e.preventDefault()
+          const  target = document.querySelector(e.target.getAttribute('href'))
+          target.style.display = null
+          target.setAttribute('aria-hidden', false)
+          target.setAttribute('arial-modal', 'true')
+
+      }
+
+      document.querySelectorAll('.js-modal').forEach(a => {
+        a.addEventListener('click', openModal)
+      })
 
       function removeBanniereCreateur() {
         let banniere = document.querySelector('#banniereCreateur');
-        if (banniere) {
-          banniere.remove();
-        }
+        banniere.remove();
       }
 
       // Appel de la fonction updateLoginButton lors du chargement de la page

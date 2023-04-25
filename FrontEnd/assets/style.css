@@ -51,17 +51,18 @@ table {
 body {
 	max-width: 1140px;
 	margin:auto;
-	font-family: 'Work Sans' ;
+	font-family: 'Work Sans';
 	font-size: 14px;
 }
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+
 }
 section {
-	margin: 50px 0
+	margin: 50px 0;
 }
+
 
 h1{
 	display: flex;
@@ -204,72 +205,6 @@ footer nav ul {
 	border-radius: 30px;
 }
 
-/* Pour la page de login */
-
-#loginFormulaire{
-	margin-top: 150px;
-}
-
-#login{
-	align-items: center;
-	color: #1D6154;
-	margin-bottom: 50px;
-	font-weight: 500;
-	font-size: 2em;
-	
-}
-
-#formulaireLogin{
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	
-	font-family: 'Work Sans';
-}
-
-
-#email, #password{
-	margin-bottom: 25px;	
-}
-
-#email, #password{
-	width: 300px;
-	height: 40px;
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-}
-.classlabel{
-	margin-bottom: 5px;
-	width: 27%;
-	
-}
-
-#seConnecter{
-	padding-left: 25px;
-	padding-right: 25px;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	margin-top: 10px;
-	border: none;
-	color: white;
-	background-color: #1D6154;
-	border-radius: 25px;
-	font-size: 1.2em;
-	font-family: 'Work Sans';
-}
-
-#mdpoublie{
-	color: black;
-	margin-top: 30px;
-	margin-bottom: 200px;
-}
-
-#mentionslegal{
-	color: black;
-	text-decoration:none;
-	margin-left: 90%;
-}
-
 /* Banniere mode créateur */
 header{
 	display: flex;
@@ -279,10 +214,138 @@ header{
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	margin-top: 00px;
 }
 #banniereCreateur{
 	color: #1D6154;
-	font-size: 3em;
-	border: 1px solid black;
-	background-color: black;
+	font-size: 1.2em;
+	background-color: rgb(0, 0, 0);
+	margin-bottom: 00px;
+	height: 40px;
+	padding-top: 20px;
+	width: 100%;
+	text-align: center;
+
 }
+#modeEditions{
+	margin-top: 10px;
+	color: white;
+	margin-right: 10px;
+
+}
+#publier{
+	margin-top: 0px;
+	color:black;
+	background-color: white;
+	padding: 5px 10px 5px 10px;
+	border-radius: 15px;
+	border: solid white 1px;
+
+}
+
+/* Page modale */
+
+.modal {
+	position: fixed;
+	display: flex;
+	align-items: center;
+	justify-content: center;	
+	top: 0;
+	left: 0;
+	margin: auto;
+	width: 99%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.80);
+
+}
+
+.modal-wrapper {
+	width: 700px;
+	height: 800px;
+	padding: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 15%;
+	border-radius: 15px;
+	background-color: white;
+	font: inherit;
+	display: flex;
+	flex-direction: column;
+
+}
+
+.croix{
+	margin-left: 96%;
+	margin-top: 15px;
+	margin-bottom: 25px;
+	font-size: 1.5em;
+}
+h3
+{
+	font-size: 2.5em;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 50px;
+
+}
+
+#addPhoto{
+	color: white;
+	background-color: #1D6154;
+	padding: 10px 17px 10px 17px;
+	font-size: 1.2em;
+	border-radius: 20px;
+	width: 35%;
+	border: none;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 10px;
+	font-family: 'Syne';
+}
+
+#deleteGallerie{
+	margin-top: 15px;
+	font-size: 1.0em;
+	border: none;
+	font-weight: 100;
+	color: #f95a5a;
+	background-color: white;
+	font-family: 'Syne';
+}
+
+#barre{
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 40px;
+	margin-top: 50px;
+	color: gray;
+}
+.lesPhotos{
+	display: grid;
+	grid-template-columns: 18% 18% 18% 18% 18%;
+	grid-template-rows: 33% 33% 33%;
+    gap:2%;    
+	object-fit: cover;
+	margin-left: 15%;
+	margin-right: 15%;
+}
+
+.imgModal{
+	width: 100%;
+	object-fit: cover;
+}
+
+.Editer{
+	font-size: 1.0em;
+	margin-bottom: 10px;
+}
+
+/* .poubelle{
+	font-size: 0.9em;
+	color: white;
+	background-color: black;
+	padding: 4px;
+	border-radius: 4px;
+	margin-bottom: 0px;
+	display: block;
+} */

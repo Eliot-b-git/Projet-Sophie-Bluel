@@ -140,17 +140,11 @@ async function figureJSONData() {
       }
 
       function deleteToken() {
-        const token = localStorage.getItem('token');
-        then(response => {
-          if (response.ok) {
-            localStorage.removeItem('token');
-            updateLoginButton();
-          } else {
-            throw new Error('Erreur lors de la suppression du token');
-          }
-        })
-        .catch(error => console.error(error));
+        localStorage.removeItem('token');
+        updateLoginButton();
       }
+
+  
 
       function updateLoginButton() {
         const loginButton = document.querySelector('#loginButton');
@@ -160,31 +154,154 @@ async function figureJSONData() {
           loginButton.addEventListener("click", deleteToken);
           addBanniereCreateur();
         } else {
-          loginButton.textContent = 'login';
-          loginButton.addEventListener("click", login);
-          loginButton.setAttribute('href', '/login');
           removeBanniereCreateur();
+          loginButton.textContent = 'login';
+          loginButton.setAttribute('href', './assets/login.html');
         }
       }
-
+      // Création de la banniere mode administrateur
       function addBanniereCreateur() {
+        
         let header = document.querySelector('header');
         let banniere = document.querySelector('#banniereCreateur');
+        let modeEdition = document.createElement("divEdition");
+        let logopublier = document.createElement("logopublier");
+        let img = document.createElement('img');
+        let publier = document.createElement('divpublier');
+        let pagemodal = document.createElement('a')
+        
         banniere = document.createElement("div");
         banniere.id = "banniereCreateur";
-        banniere.textContent = "Mode Créateur";
+        
+        img.src = ".\assets\images\note-square-outlined-button-with-a-pencil.png";
+        
+        modeEdition.textContent = "Mode édition";
+        modeEdition.id = "modeEditions";
+
+        publier.id = "publier";
+        publier.textContent = "publier les changements";
+
+        pagemodal.id = 'lienmodal';
+        pagemodal.classList = 'js-modal';
+        pagemodal.href = '#modal1';
+
+        banniere.appendChild(pagemodal);
         header.prepend(banniere);
+        pagemodal.appendChild(img);
+        pagemodal.appendChild(logopublier);
+        logopublier.appendChild(modeEdition);
+        banniere.appendChild(publier);
       }
+
+      // Création de la page modale 
 
       function removeBanniereCreateur() {
         let banniere = document.querySelector('#banniereCreateur');
-        if (banniere) {
-          banniere.remove();
-        }
+        banniere.remove();
       }
+
+      
 
       // Appel de la fonction updateLoginButton lors du chargement de la page
       updateLoginButton();
+
+      // Page modal
+
+      let modal = null
+
+      // Ouverture de la page modal 
+      const openModal = function(e) {
+          e.preventDefault()
+          
+          const  target = document.getElementById('modal1')
+          console.log(target)  
+          // Permet de rendre visisble la boite
+          target.style.display = 'block'
+          target.removeAttribute('aria-hidden')
+          target.setAttribute('aria-modal', 'true')
+
+          modal = target
+
+          modal.addEventListener('click', closeModal)
+          //  Arret si click sur la croix
+          modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
+          //  Arret si click en dehors de la page modal
+          modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
+      }
+      // Fermeture de la page modal 
+      const closeModal = function (e) {
+        if (modal === null) return
+        e.preventDefault()
+        modal.style.display = "none"
+        modal.setAttribute('aria-hidden', 'true')
+        modal.removeAttribute('arial-modal')
+        modal.removeEventListener('click', closeModal)
+        modal.querySelector('.js-modal-close').removeEventListener('click', closeModal)
+        modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation)
+        modal = null
+      }         
+      // Permet d'eviter que lorsque on click dans la boite modal sa ne ferme pas 
+      const stopPropagation = function (e) {
+        e.stopPropagation()
+      }
+
+      // Permet de pouvoir quitter la page modale avec echa
+      window.addEventListener('keydown', function (e){
+        if (e.key === "Escape" || e.key === "Esc" ) {
+          closeModal(e)
+        }
+
+      })
+
+      // Selectionner l'aside 
+      document.getElementById('lienmodal').addEventListener('click', openModal)
+
+
+      //Ajout de l'emplacement des photos
+      jsonData.forEach(function(element) {
+        // création d'un élément figure
+        let figure = document.createElement("figure");
+        // Attribution des categories de chaque photos 
+        figure.dataset.categorie = element.category.id;
+        //  création de l'image 
+        let image = document.createElement("img");
+        image.classList = "imgModal fa-solid fa-trash-can poubelle"; 
+        
+        // Ajout d'un paramétre d'image
+        image.src = element.imageUrl;
+                
+        // Ajout de l'image en tant qu'enfant dans figure
+        figure.appendChild(image);
+  
+        // création d'un élément figcaption    
+        let figcaption = document.createElement("figcaption");
+
+        let iconePoubelle = document.createElement("i")
+        iconePoubelle.classList = "fa-solid fa-trash-can poubelle"
+        image.appendChild(iconePoubelle)
+        figcaption.classList = "Editer"
+        // Extraction et du texte d'un figcaption
+        let text = document.createTextNode('éditer');
+        // Ajout du text en tant qu'enfant pour figcaption
+        figcaption.appendChild(text);
+        // Ajout de figcaption en tant qu'enfant pour figure
+        figure.appendChild(figcaption);
+       
+        
+        // Création de la gallery 
+        let gallery = document.querySelector(".lesPhotos");
+      
+        // Ajout de la figure en tant qu'enfant dans de la class gallery
+        gallery.appendChild(figure);
+
+  
+      });
+      
+      
+
+
+          
+
 
 
   }

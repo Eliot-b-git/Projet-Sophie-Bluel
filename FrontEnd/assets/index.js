@@ -164,10 +164,10 @@ async function figureJSONData() {
         
         let header = document.querySelector('header');
         let banniere = document.querySelector('#banniereCreateur');
-        let modeEdition = document.createElement("divEdition");
-        let logopublier = document.createElement("logopublier");
+        let modeEdition = document.createElement("span");
+        let logopublier = document.createElement("span");
         let img = document.createElement('img');
-        let publier = document.createElement('divpublier');
+        let publier = document.createElement('span');
         let pagemodal = document.createElement('a')
         
         banniere = document.createElement("div");
@@ -265,7 +265,7 @@ async function figureJSONData() {
         figure.dataset.categorie = element.category.id;
         //  création de l'image 
         let image = document.createElement("img");
-        image.classList = "imgModal fa-solid fa-trash-can poubelle"; 
+        image.classList = "imgModal"; 
         
         // Ajout d'un paramétre d'image
         image.src = element.imageUrl;
@@ -278,8 +278,12 @@ async function figureJSONData() {
 
         let iconePoubelle = document.createElement("i")
         iconePoubelle.classList = "fa-solid fa-trash-can poubelle"
-        image.appendChild(iconePoubelle)
+
         figcaption.classList = "Editer"
+
+        image.appendChild(iconePoubelle)
+
+        
         // Extraction et du texte d'un figcaption
         let text = document.createTextNode('éditer');
         // Ajout du text en tant qu'enfant pour figcaption

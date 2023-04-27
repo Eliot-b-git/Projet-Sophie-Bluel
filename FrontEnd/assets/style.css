@@ -333,6 +333,8 @@ h3
 .imgModal{
 	width: 100%;
 	object-fit: cover;
+	z-index: 0;
+
 }
 
 .Editer{
@@ -340,12 +342,12 @@ h3
 	margin-bottom: 10px;
 }
 
-/* .poubelle{
-	font-size: 0.9em;
+.poubelle{
+	font-size: 3.0em;
 	color: white;
 	background-color: black;
 	padding: 4px;
 	border-radius: 4px;
 	margin-bottom: 0px;
-	display: block;
-} */
+	z-index: 1;
+}

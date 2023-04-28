@@ -3,6 +3,7 @@ async function figureJSONData() {
     const response = await fetch("http://localhost:5678/api/works");
     const jsonData = await response.json();
     console.log(jsonData);
+    let counter0 = 0;
     jsonData.forEach(function(element) {
       // création d'un élément figure
       let figure = document.createElement("figure");
@@ -14,6 +15,7 @@ async function figureJSONData() {
       // Ajout d'un paramétre d'image
       image.src = element.imageUrl;
       image.alt = element.title;
+      figure.classList = 'a' + counter0;
               
       // Ajout de l'image en tant qu'enfant dans figure
       figure.appendChild(image);
@@ -32,6 +34,8 @@ async function figureJSONData() {
     
       // Ajout de la figure en tant qu'enfant dans de la class gallery
       gallery.appendChild(figure);
+
+      counter0++;
 
     });
 
@@ -253,10 +257,13 @@ async function figureJSONData() {
 
       })
 
+
+
+
       // Selectionner l'aside 
       document.getElementById('lienmodal').addEventListener('click', openModal)
 
-
+      let counter1 = 0;
       //Ajout de l'emplacement des photos
       jsonData.forEach(function(element) {
         // création d'un élément figure
@@ -281,7 +288,9 @@ async function figureJSONData() {
 
         figcaption.classList = "Editer"
 
-        image.appendChild(iconePoubelle)
+        figure.appendChild(iconePoubelle)
+
+        figure.classList = 'a' + counter1;
 
         
         // Extraction et du texte d'un figcaption
@@ -298,10 +307,40 @@ async function figureJSONData() {
         // Ajout de la figure en tant qu'enfant dans de la class gallery
         gallery.appendChild(figure);
 
+        counter1++;
+
+        
   
       });
+
+
       
-      
+      // Supression de l'image 
+
+        // Récupération de toutes les poubelles
+        const poubelles = document.querySelectorAll('.poubelle');
+
+        // Boucle sur toutes les poubelles
+        poubelles.forEach(poubelle => {
+          // Ajout d'un écouteur d'événement "click"
+          poubelle.addEventListener('click', () => {
+            // Récupération de l'élément parent (la figure)
+            const figure = poubelle.parentNode;
+            // Récupération de l'attribut "class" de la figure
+            const classe = figure.getAttribute('class');
+            // Récupération de l'élément ayant la même classe dans la galerie d'images
+            const img = document.querySelector(`.gallery .${classe}`);
+            // Suppression de la figure et de l'image
+            figure.remove();
+            if (img) {
+              img.remove();
+            }
+          });
+        });
+
+
+
+              
 
 
           

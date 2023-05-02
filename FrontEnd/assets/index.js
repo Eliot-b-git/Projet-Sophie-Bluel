@@ -183,6 +183,7 @@ async function figureJSONData() {
         modeEdition.id = "modeEditions";
 
         publier.id = "publier";
+        publier.classList = "lienmodal2"
         publier.textContent = "publier les changements";
 
         pagemodal.id = 'lienmodal';
@@ -232,6 +233,23 @@ async function figureJSONData() {
           //  Arret si click en dehors de la page modal
           modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
       }
+      const openModal2 = function(e) {
+        e.preventDefault()
+        
+        const target = document.getElementById('modal2')
+        console.log(target)
+        target.style.display = 'block'
+        target.removeAttribute('aria-hidden')
+        target.setAttribute('aria-modal', 'true')
+    
+        modal = target
+    
+        modal.addEventListener('click', closeModal)
+        modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
+        modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
+    }
+    
+
       // Fermeture de la page modal 
       const closeModal = function (e) {
         if (modal === null) return
@@ -257,12 +275,11 @@ async function figureJSONData() {
 
       })
 
-
-
-
       // Selectionner l'aside 
-      document.getElementById('lienmodal').addEventListener('click', openModal)
+      document.getElementById('publier').addEventListener('click', openModal2)
 
+      document.getElementById('lienmodal').addEventListener('click', openModal)
+      
       let counter1 = 0;
       //Ajout de l'emplacement des photos
       jsonData.forEach(function(element) {
@@ -338,13 +355,103 @@ async function figureJSONData() {
           });
         });
 
+        // Déposer une photo sur le page modal publier les changements 
+
+        const dropArea = document.getElementById("drop-area");
+        const fileInput = document.getElementById("file-input");
+        const addPhotoBtn = document.querySelector(".add-photo");
+        
+        // Ajouter un gestionnaire d'événements pour le bouton "Ajouter photo"
+        addPhotoBtn.addEventListener("click", function(e) {
+          e.preventDefault();
+          fileInput.click();
+        });
+        
+        // Ajouter un gestionnaire d'événements pour le champ de fichier
+        fileInput.addEventListener("change", function(e) {
+          const files = e.target.files;
+          if (files.length > 0) {
+            const file = files[0];
+            // Afficher la photo dans le drop-area
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            img.style.maxHeight = "100%";
+            img.style.maxWidth = "100%";
+            dropArea.innerHTML = "";
+            dropArea.appendChild(img);
+          }
+        });
+        
+        // Empêcher la propagation des événements dragenter et dragover
+        dropArea.addEventListener("dragenter", function(event) {
+          event.preventDefault();
+        }, false);
+        
+        dropArea.addEventListener("dragover", function(event) {
+          event.preventDefault();
+        }, false);
+        
+        // Gérer l'événement drop
+        dropArea.addEventListener("drop", function(event) {
+          event.preventDefault();
+          const files = event.dataTransfer.files;
+          if (files.length > 0) {
+            const file = files[0];
+            // Afficher la photo dans le drop-area
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(file);
+            img.style.maxHeight = "100%";
+            img.style.maxWidth = "100%";
+            dropArea.innerHTML = "";
+            dropArea.appendChild(img);
+          }
+        }, false);
+        
 
 
-              
+      // Création de la page modal pour publier un changement 
+
+      const form = document.getElementById("formulaireAjoutPhoto");
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault(); // Empêcher l'envoi normal du formulaire
+
+        // Vérifier que tous les champs sont remplis
+        const titre = document.getElementById("titre").value;
+        const categorie = document.getElementById("categorie").value;
+        const files = document.getElementById("file-input").value;
+
+        console.log(files)
 
 
-          
+        
 
+        if (!titre || !categorie || !files.length) {
+
+          alert("Veuillez remplir tous les champs !");
+          return;
+        }
+
+        // Créer un objet FormData pour envoyer les données du formulaire
+        const formData = new FormData();
+        formData.append("titre", titre);
+        formData.append("categorie", categorie);
+        for (let i = 0; i < files.length; i++) {
+          formData.append("photos", files[i]);
+        }
+
+        // Envoyer les données via fetch
+        fetch("http://localhost:5678/api/works", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data); // Afficher la réponse de l'API dans la console
+            location.reload(); // Recharger la page pour afficher le nouveau projet dans la galerie
+          })
+          .catch((error) => console.error(error));
+        });
 
 
   }

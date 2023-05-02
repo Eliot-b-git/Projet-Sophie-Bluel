@@ -353,3 +353,80 @@ aside div div figure{
 	margin-left: -30px;
 	
 }
+
+/* Formulaire ajout de photo */
+
+#formulaireAjoutPhoto{
+	margin-left: 15%;
+	margin-right: 15%;
+	font: inherit;
+}
+
+#TitrePhoto, #CategoriePhoto{
+	display: flex;
+	flex-direction: column;
+	margin-top: 15px;
+	font-size: 1.2em;
+	font-weight: 500;
+} 
+
+#titre , #categorie{
+	margin-top: 5px;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	height: 60px;
+}
+
+#drop-area {
+	margin-bottom: 55px;
+	border-radius: 5px;
+	height: 170px;
+	text-align: center;
+	background-color: #50aec425;
+  }
+  
+#drop-area .file-type {
+	margin-top: 10px;
+	display: block;
+	font-size: 10px;
+	color: #424949;
+  }
+  
+#drop-area input[type="file"] {
+	display: none;
+}
+
+.fa-image{
+	margin-top: 20px;
+	margin-bottom: 10px;
+	height: 60px;
+	width: 80px;
+	font-size: 4em;
+	align-items: center;
+	color: #42494977
+}
+  
+.add-photo {
+	display: block;
+	background-color: #4d4f5048;
+	color: #53739c;
+	font-size: 15px;
+	font-weight: bold;
+	padding: 10px 0px;
+	margin-left: 25%;
+	margin-right: 25%;
+	border-radius: 15px;
+	cursor: pointer;
+	margin-top: 0px;
+}
+
+#boutonValider{
+	margin-left: 26%;
+	border: none;
+	background-color: rgba(128, 128, 128, 0.74);
+	color: white;
+	padding: 10px 100px;
+	font-size: 1.3em;
+	border-radius: 20px;
+}
+  

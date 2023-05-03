@@ -274,12 +274,25 @@ header{
 
 }
 
+#flecheEtCroix{
+	justify-content: space-between;
+	display: flex;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
 .croix{
-	margin-left: 96%;
 	margin-top: 15px;
 	margin-bottom: 25px;
 	font-size: 1.5em;
 }
+
+.fleche{
+	margin-top: 15px;
+	margin-bottom: 25px;
+	font-size: 1.5em;
+}
+
 h3
 {
 	font-size: 2.5em;

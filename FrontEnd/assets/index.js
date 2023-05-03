@@ -355,6 +355,10 @@ async function figureJSONData() {
           });
         });
 
+
+
+        
+
         // Déposer une photo sur le page modal publier les changements 
 
         const dropArea = document.getElementById("drop-area");
@@ -406,11 +410,12 @@ async function figureJSONData() {
             dropArea.appendChild(img);
           }
         }, false);
-        
-
+      
+     
 
       // Création de la page modal pour publier un changement 
 
+              
       const form = document.getElementById("formulaireAjoutPhoto");
 
       form.addEventListener("submit", (event) => {
@@ -419,12 +424,8 @@ async function figureJSONData() {
         // Vérifier que tous les champs sont remplis
         const titre = document.getElementById("titre").value;
         const categorie = document.getElementById("categorie").value;
-        const files = document.getElementById("file-input").value;
+        const files = fileInput.files;
 
-        console.log(files)
-
-
-        
 
         if (!titre || !categorie || !files.length) {
 
@@ -443,8 +444,12 @@ async function figureJSONData() {
         // Envoyer les données via fetch
         fetch("http://localhost:5678/api/works", {
           method: "POST",
+          headers: {
+            Authorization: "Bearer TONTOKEN"
+          },
           body: formData,
         })
+        
           .then((response) => response.json())
           .then((data) => {
             console.log(data); // Afficher la réponse de l'API dans la console
@@ -452,9 +457,9 @@ async function figureJSONData() {
           })
           .catch((error) => console.error(error));
         });
-
-
-  }
+     
+     
+       }
 figureJSONData()
 
 

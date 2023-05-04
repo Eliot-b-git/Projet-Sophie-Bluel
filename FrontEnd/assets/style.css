@@ -261,11 +261,11 @@ header{
 
 .modal-wrapper {
 	width: 700px;
-	height: 800px;
+	height: 750px;
 	padding: 20px;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 15%;
+	margin-top: 7%;
 	border-radius: 15px;
 	background-color: white;
 	font: inherit;

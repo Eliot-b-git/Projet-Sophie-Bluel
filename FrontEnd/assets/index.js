@@ -137,16 +137,20 @@ async function figureJSONData() {
         activeFilter.style.color = "white";
       }
 
+      const token = localStorage.getItem('token');
+
       // Vérifie si un token est présent dans le stockage local
+      function deleteToken() {
+        localStorage.removeItem('token');
+        updateLoginButton();
+      }      
+
       function isLoggedIn() {
         const token = localStorage.getItem('token');
         return token !== null && token !== undefined;
       }
 
-      function deleteToken() {
-        localStorage.removeItem('token');
-        updateLoginButton();
-      }
+
 
   
 
@@ -412,54 +416,66 @@ async function figureJSONData() {
         }, false);
       
      
+        const form = document.getElementById("formulaireAjoutPhoto");
 
-      // Création de la page modal pour publier un changement 
-
-              
-      const form = document.getElementById("formulaireAjoutPhoto");
-
-      form.addEventListener("submit", (event) => {
-        event.preventDefault(); // Empêcher l'envoi normal du formulaire
-
-        // Vérifier que tous les champs sont remplis
-        const titre = document.getElementById("titre").value;
-        const categorie = document.getElementById("categorie").value;
-        const files = fileInput.files;
-
-
-        if (!titre || !categorie || !files.length) {
-
-          alert("Veuillez remplir tous les champs !");
-          return;
-        }
-
-        // Créer un objet FormData pour envoyer les données du formulaire
-        const formData = new FormData();
-        formData.append("titre", titre);
-        formData.append("categorie", categorie);
-        for (let i = 0; i < files.length; i++) {
-          formData.append("photos", files[i]);
-        }
-
-        // Envoyer les données via fetch
-        fetch("http://localhost:5678/api/works", {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer TONTOKEN"
-          },
-          body: formData,
-        })
+        form.addEventListener("submit", (event) => {
+          event.preventDefault(); // Empêcher l'envoi normal du formulaire
         
+          // Vérifier que tous les champs sont remplis
+          const titre = document.getElementById("titre").value;
+          const categorie = document.getElementById("categorie").value;
+          const files = fileInput.files;
+        
+          console.log(categorie)
+          if (!titre || !categorie || !files.length) {
+            alert("Veuillez remplir tous les champs !");
+            return;
+          }
+
+
+          // Attribuer l'ID de la catégorie en fonction de son nom
+          let categoryId;
+          if (categorie === "Objets") {
+            categoryId = 1;
+          } else if (categorie === "Appartements") {
+            categoryId = 2;
+          }
+
+          // // Créer un objet pour la catégorie
+          // const categoryObj = {
+          //   id: categoryId,
+          //   name: categorie
+          // };
+
+        
+          // Créer un objet FormData pour envoyer les données du formulaire
+          const formData = new FormData();
+          formData.append("title", titre);
+          formData.append("category", categoryId);
+          if (files && files.length > 0) {
+              formData.append("image", files[0]);
+          }
+        
+          const token = localStorage.getItem('token');
+        
+          fetch("http://localhost:5678/api/works", {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`
+            },
+            body: formData
+          })
           .then((response) => response.json())
           .then((data) => {
             console.log(data); // Afficher la réponse de l'API dans la console
-            location.reload(); // Recharger la page pour afficher le nouveau projet dans la galerie
+            // location.reload(); // Recharger la page pour afficher le nouveau projet dans la galerie
           })
           .catch((error) => console.error(error));
         });
-     
-     
-       }
+
+
+
+
+      }        
+
 figureJSONData()
-
-

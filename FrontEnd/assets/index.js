@@ -368,6 +368,11 @@ async function figureJSONData() {
         const dropArea = document.getElementById("drop-area");
         const fileInput = document.getElementById("file-input");
         const addPhotoBtn = document.querySelector(".add-photo");
+
+        const iconLabel = document.querySelector('label i.fa-solid.fa-image');
+        const addPhotoLabel = document.querySelector('label.add-photo');
+        const fileTypeSpan = document.querySelector('span.file-type');
+
         
         // Ajouter un gestionnaire d'événements pour le bouton "Ajouter photo"
         addPhotoBtn.addEventListener("click", function(e) {
@@ -385,7 +390,9 @@ async function figureJSONData() {
             img.src = URL.createObjectURL(file);
             img.style.maxHeight = "100%";
             img.style.maxWidth = "100%";
-            dropArea.innerHTML = "";
+            iconLabel.remove();
+            addPhotoLabel.remove();
+            fileTypeSpan.remove();
             dropArea.appendChild(img);
           }
         });
@@ -414,6 +421,8 @@ async function figureJSONData() {
             dropArea.appendChild(img);
           }
         }, false);
+
+        
       
      
         const form = document.getElementById("formulaireAjoutPhoto");
@@ -425,6 +434,10 @@ async function figureJSONData() {
           const titre = document.getElementById("titre").value;
           const categorie = document.getElementById("categorie").value;
           const files = fileInput.files;
+
+          console.log(files);
+          console.log(titre)
+
         
           console.log(categorie)
           if (!titre || !categorie || !files.length) {
@@ -467,6 +480,22 @@ async function figureJSONData() {
           })
           .then((response) => response.json())
           .then((data) => {
+                // Créer un nouvel élément figure pour le projet ajouté
+                const newFigure = document.createElement('figure');
+                let gallery = document.querySelector(".gallery");
+
+                const newImage = document.createElement('img');
+                newImage.src = data.imageUrl;
+                newImage.alt = data.title;
+                newFigure.appendChild(newImage);
+
+                const newCaption = document.createElement('figcaption');
+                const newCaptionText = document.createTextNode(data.title);
+                newCaption.appendChild(newCaptionText);
+                newFigure.appendChild(newCaption);
+
+                // Ajouter le nouvel élément à la galerie
+                gallery.appendChild(newFigure);
             console.log(data); // Afficher la réponse de l'API dans la console
             // location.reload(); // Recharger la page pour afficher le nouveau projet dans la galerie
           })

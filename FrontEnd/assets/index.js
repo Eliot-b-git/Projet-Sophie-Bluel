@@ -15,6 +15,7 @@ async function figureJSONData() {
       // Ajout d'un paramétre d'image
       image.src = element.imageUrl;
       image.alt = element.title;
+      figure.id = 'aa' + counter0;
       figure.classList = 'a' + counter0;
               
       // Ajout de l'image en tant qu'enfant dans figure
@@ -174,14 +175,16 @@ async function figureJSONData() {
         let banniere = document.querySelector('#banniereCreateur');
         let modeEdition = document.createElement("span");
         let logopublier = document.createElement("span");
-        let img = document.createElement('img');
+        let icones = document.createElement('icones');
         let publier = document.createElement('span');
         let pagemodal = document.createElement('a')
         
         banniere = document.createElement("div");
         banniere.id = "banniereCreateur";
         
-        img.src = ".\assets\images\note-square-outlined-button-with-a-pencil.png";
+        icones.classList = "fa-solid fa-pen-to-square";
+        icones.id = "ModifierBanniere";
+
         
         modeEdition.textContent = "Mode édition";
         modeEdition.id = "modeEditions";
@@ -196,7 +199,7 @@ async function figureJSONData() {
 
         banniere.appendChild(pagemodal);
         header.prepend(banniere);
-        pagemodal.appendChild(img);
+        pagemodal.appendChild(icones);
         pagemodal.appendChild(logopublier);
         logopublier.appendChild(modeEdition);
         banniere.appendChild(publier);
@@ -280,9 +283,9 @@ async function figureJSONData() {
       })
 
       // Selectionner l'aside 
-      document.getElementById('publier').addEventListener('click', openModal2)
+      document.getElementById('premiermodifier').addEventListener('click', openModal2)
 
-      document.getElementById('lienmodal').addEventListener('click', openModal)
+      document.getElementById('secondmodifier').addEventListener('click', openModal)
       
       let counter1 = 0;
       //Ajout de l'emplacement des photos
@@ -312,6 +315,7 @@ async function figureJSONData() {
         figure.appendChild(iconePoubelle)
 
         figure.classList = 'a' + counter1;
+        iconePoubelle.dataset.api = element.id;
 
         
         // Extraction et du texte d'un figcaption
@@ -338,26 +342,67 @@ async function figureJSONData() {
       
       // Supression de l'image 
 
-        // Récupération de toutes les poubelles
-        const poubelles = document.querySelectorAll('.poubelle');
-
-        // Boucle sur toutes les poubelles
+      // Définition de la fonction qui met à jour la liste des poubelles
+      function updatePoubelles(poubelles) {
         poubelles.forEach(poubelle => {
-          // Ajout d'un écouteur d'événement "click"
           poubelle.addEventListener('click', () => {
-            // Récupération de l'élément parent (la figure)
             const figure = poubelle.parentNode;
-            // Récupération de l'attribut "class" de la figure
             const classe = figure.getAttribute('class');
-            // Récupération de l'élément ayant la même classe dans la galerie d'images
             const img = document.querySelector(`.gallery .${classe}`);
-            // Suppression de la figure et de l'image
             figure.remove();
             if (img) {
               img.remove();
             }
+            // Mettre à jour la liste des poubelles
+            updatePoubelles(document.querySelectorAll('.poubelle'));
           });
         });
+      }
+      
+
+      // Récupération de toutes les poubelles
+      const poubelles = document.querySelectorAll('.poubelle');
+
+      // Boucle sur toutes les poubelles
+      poubelles.forEach(poubelle => {
+        // Ajout d'un écouteur d'événement "click"
+        poubelle.addEventListener('click', () => {
+          // Récupération de l'élément parent (la figure)
+          const figure = poubelle.parentNode;
+          // Récupération de l'attribut "class" de la figure
+          const classe = figure.getAttribute('class');
+          // Récupération de l'identifiant de l'image
+          const id = poubelle.dataset.api;
+          
+          // Envoi de la requête DELETE à l'API pour supprimer l'image
+          const token = localStorage.getItem('token');
+          fetch(`http://localhost:5678/api/works/${id}`, {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+          .then(response => {
+            if (response.ok) {
+              // Suppression de la figure et de l'image
+              figure.remove();
+              const img = document.querySelector(`.gallery .${classe}`);
+              if (img) {
+                img.remove();
+              }
+              // Mettre à jour la liste des poubelles
+              updatePoubelles(document.querySelectorAll('.poubelle'));
+            } else {
+              throw new Error('Erreur lors de la suppression de l\'image');
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            alert('Une erreur est survenue lors de la suppression de l\'image');
+          });
+        });
+      });
+
 
 
 

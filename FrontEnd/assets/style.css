@@ -60,7 +60,7 @@ header {
 
 }
 section {
-	margin: 50px 0;
+	margin: 50px 0 0 0;
 }
 
 
@@ -231,8 +231,12 @@ header{
 	margin-top: 10px;
 	color: white;
 	margin-right: 10px;
-
 }
+#lienmodal{
+	text-decoration: none;
+	border: none;
+}
+
 #publier{
 	margin-top: 0px;
 	color:black;
@@ -442,4 +446,36 @@ aside div div figure{
 	font-size: 1.3em;
 	border-radius: 20px;
 }
-  
+
+/*  Ajout de la mises en pages des icones modifier */
+
+#projetmodifiericone {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+.fa-pen-to-square{
+	font-size: 1.5em;
+	color: black;
+	font-weight: 200;
+}
+.modifier{
+	font-family: Work Sans;
+	margin-right: 5px;
+	font-size: 0.9em;
+}
+#premiermodifier{
+
+	margin-left: 55px;
+	margin-top: 10px;
+}
+#secondmodifier{
+	margin-top: 4px;
+	margin-left: 25px;
+}
+#ModifierBanniere{
+	color: white;
+	font-size: 1em;
+	margin-right: 5px;
+	font-weight: 100;
+}

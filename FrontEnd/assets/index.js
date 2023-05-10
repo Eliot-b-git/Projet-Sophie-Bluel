@@ -417,7 +417,19 @@ function updateGallery(jsonData) {
     });
 
 
+    function refreshGallery() {
+      fetch('http://localhost:5678/api/works')
+        .then(response => response.json())
+        .then(data => {
+          // Appel de la fonction updateGallery avec les nouvelles données
+          updateGallery(data);
 
+        })
+        .catch(error => {
+          console.error(error);
+          alert('Une erreur est survenue lors de la récupération des images');
+        });
+    }
                 
 
     function addNewPhoto() {
@@ -599,8 +611,7 @@ function updateGallery(jsonData) {
               lesphotos.forEach((figure) => {
                 figure.remove();
               });
-              
-              updateGallery(jsonData);
+              refreshGallery();
              
         })
         .catch((error) => console.error(error));

@@ -133,6 +133,7 @@ li:hover {
 	grid-template-columns: 1fr 1fr 1fr;
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
+	margin-bottom: 50px;
 }
 
 .gallery img {
@@ -141,7 +142,7 @@ li:hover {
 }
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
 #contact > * {
 	text-align: center;
@@ -438,11 +439,12 @@ aside div div figure{
 }
 
 #boutonValider{
-	margin-left: 26%;
+	margin-left: auto;
+	margin-right: auto;
 	border: none;
 	background-color: rgba(128, 128, 128, 0.74);
 	color: white;
-	padding: 10px 100px;
+	padding: 10px 130px;
 	font-size: 1.3em;
 	border-radius: 20px;
 }

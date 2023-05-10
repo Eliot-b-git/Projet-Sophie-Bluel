@@ -283,9 +283,15 @@ async function figureJSONData() {
       })
 
       // Selectionner l'aside 
-      document.getElementById('premiermodifier').addEventListener('click', openModal2)
+      document.getElementById('premiermodifier').addEventListener('click', openModal)
 
       document.getElementById('secondmodifier').addEventListener('click', openModal)
+
+      // Lorsque on clique sur ajout photo sa ouvre la deuxiéme page modal et ferme la premiére
+      const addPhoto = document.getElementById("addPhoto");
+      addPhoto.addEventListener("click", closeModal);
+      addPhoto.addEventListener("click", openModal2);
+
       
       let counter1 = 0;
       //Ajout de l'emplacement des photos
@@ -338,8 +344,6 @@ async function figureJSONData() {
   
       });
 
-
-      
       // Supression de l'image 
 
       // Définition de la fonction qui met à jour la liste des poubelles
@@ -405,7 +409,47 @@ async function figureJSONData() {
 
 
 
+                  
 
+      function addNewPhoto() {
+      
+        // Recréer les éléments HTML pour ajouter une nouvelle photo
+        const azertyDiv = document.createElement("div");
+        azertyDiv.id = "Azerty";
+      
+        const newFileInput = document.createElement("input");
+        newFileInput.type = "file";
+        newFileInput.id = "file-input";
+        newFileInput.accept = ".jpg, .jpeg, .png";
+        newFileInput.multiple = true;
+      
+        const newIconLabel = document.createElement("label");
+        const newIcon = document.createElement("i");
+        newIcon.classList.add("fa-solid", "fa-image");
+        newIconLabel.appendChild(newIcon);
+      
+        const newAddPhotoLabel = document.createElement("label");
+        newAddPhotoLabel.htmlFor = "file-input";
+        newAddPhotoLabel.classList.add("add-photo");
+        newAddPhotoLabel.textContent = "+ Ajouter photo";
+      
+        const newFileTypeSpan = document.createElement("span");
+        newFileTypeSpan.classList.add("file-type");
+        newFileTypeSpan.textContent = "JPG, PNG : 4 Mo max";
+      
+        azertyDiv.appendChild(newFileInput);
+        azertyDiv.appendChild(newIconLabel);
+        azertyDiv.appendChild(newAddPhotoLabel);
+        azertyDiv.appendChild(newFileTypeSpan);
+      
+        // Ajouter le nouvel élément HTML à la page
+        const dropArea = document.getElementById("drop-area");
+        dropArea.appendChild(azertyDiv);
+      }
+      
+      // Appeler la fonction au besoin
+      addNewPhoto();
+      
         
 
         // Déposer une photo sur le page modal publier les changements 
@@ -418,9 +462,11 @@ async function figureJSONData() {
         const addPhotoLabel = document.querySelector('label.add-photo');
         const fileTypeSpan = document.querySelector('span.file-type');
 
+       
+
         
         // Ajouter un gestionnaire d'événements pour le bouton "Ajouter photo"
-        addPhotoBtn.addEventListener("click", function(e) {
+        addPhotoBtn.addEventListener("click", function(e) {   
           e.preventDefault();
           fileInput.click();
         });
@@ -442,34 +488,8 @@ async function figureJSONData() {
           }
         });
         
-        // Empêcher la propagation des événements dragenter et dragover
-        dropArea.addEventListener("dragenter", function(event) {
-          event.preventDefault();
-        }, false);
-        
-        dropArea.addEventListener("dragover", function(event) {
-          event.preventDefault();
-        }, false);
-        
-        // Gérer l'événement drop
-        dropArea.addEventListener("drop", function(event) {
-          event.preventDefault();
-          const files = event.dataTransfer.files;
-          if (files.length > 0) {
-            const file = files[0];
-            // Afficher la photo dans le drop-area
-            const img = document.createElement("img");
-            img.src = URL.createObjectURL(file);
-            img.style.maxHeight = "100%";
-            img.style.maxWidth = "100%";
-            dropArea.innerHTML = "";
-            dropArea.appendChild(img);
-          }
-        }, false);
 
-        
-      
-     
+
         const form = document.getElementById("formulaireAjoutPhoto");
 
         form.addEventListener("submit", (event) => {
@@ -479,6 +499,7 @@ async function figureJSONData() {
           const titre = document.getElementById("titre").value;
           const categorie = document.getElementById("categorie").value;
           const files = fileInput.files;
+          const boutonvalider = document.getElementById("boutonValider");
 
           console.log(files);
           console.log(titre)
@@ -488,7 +509,14 @@ async function figureJSONData() {
           if (!titre || !categorie || !files.length) {
             alert("Veuillez remplir tous les champs !");
             return;
+          } 
+          
+          if (titre && categorie && files.length) {
+            boutonvalider.style.backgroundColor = "#1D6154";
+            boutonvalider.style.color = "white";
+            closeModal;
           }
+          
 
 
           // Attribuer l'ID de la catégorie en fonction de son nom
@@ -541,15 +569,25 @@ async function figureJSONData() {
 
                 // Ajouter le nouvel élément à la galerie
                 gallery.appendChild(newFigure);
-            console.log(data); // Afficher la réponse de l'API dans la console
-            // location.reload(); // Recharger la page pour afficher le nouveau projet dans la galerie
+                console.log(data); 
+                // Afficher la réponse de l'API dans la console  
+
+                // Réinitialiser les champs du formulaire
+                const image = document.querySelector("#drop-area img");
+                if (image) {
+                  image.remove();
+                }
+
+                form.reset();
+                fileInput.value = '';
+
+                const azerty = document.getElementById("Azerty"); 
+                azerty.remove();
+
+                addNewPhoto();
+               
           })
           .catch((error) => console.error(error));
         });
-
-
-
-
       }        
-
 figureJSONData()

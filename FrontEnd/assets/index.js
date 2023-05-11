@@ -330,6 +330,41 @@ function updateGallery(jsonData) {
     figure.classList = 'a' + counter1;
     iconePoubelle.dataset.api = element.id;
 
+    // Ajout d'un gestionnaire d'événements "click" sur l'icône poubelle
+    iconePoubelle.addEventListener('click', function() {
+      const poubelle = document.querySelectorAll('.poubelle');
+
+       id = iconePoubelle.dataset.api
+      // Envoi de la requête DELETE à l'API pour supprimer l'image
+      const token = localStorage.getItem('token');
+      fetch(`http://localhost:5678/api/works/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          // Suppression de la figure et de l'image
+          figure.remove();
+          const classe = figure.getAttribute('class');
+          const img = document.querySelector(`.gallery .${classe}`);
+          console.log(img);
+          console.log(classe);
+          img.remove();
+          // Mettre à jour la liste des poubelles
+          updatePoubelles(document.querySelectorAll('.poubelle'));
+        } else {
+          throw new Error('Erreur lors de la suppression de l\'image');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        alert('Une erreur est survenue lors de la suppression de l\'image');
+      });
+      console.log('Icône poubelle cliquée');
+    });
+
     
     // Extraction et du texte d'un figcaption
     let text = document.createTextNode('éditer');
@@ -423,6 +458,7 @@ function updateGallery(jsonData) {
         .then(data => {
           // Appel de la fonction updateGallery avec les nouvelles données
           updateGallery(data);
+          
 
         })
         .catch(error => {

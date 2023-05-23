@@ -478,6 +478,11 @@ function refreshGallery() {
 }
                 
 
+// Déposer une photo sur le page modal publier les changements 
+
+const dropArea = document.getElementById("drop-area");
+const addPhotoBtn = document.querySelector(".add-photo");
+
 function addNewPhoto() {
 
   // Recréer les éléments HTML pour ajouter une nouvelle photo
@@ -510,53 +515,34 @@ function addNewPhoto() {
   azertyDiv.appendChild(newFileTypeSpan);
 
   // Ajouter le nouvel élément HTML à la page
-  const dropArea = document.getElementById("drop-area");
   dropArea.appendChild(azertyDiv);
+
+  // Ajouter un gestionnaire d'événements pour le champ de fichier
+  newFileInput.addEventListener("change" , function(e) {
+    const files = e.target.files;
+    if (files.length > 0) {
+      const file = files[0];
+      console.log(file);
+      // Afficher la photo dans le drop-area
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(file);
+      img.style.maxHeight = "100%";
+      img.style.maxWidth = "100%";
+      newIconLabel.remove();
+      newAddPhotoLabel.remove();
+      newFileTypeSpan.remove();
+      dropArea.appendChild(img);
+    }
+  });
+
 }
-    
+
+
 // Appeler la fonction au besoin
 addNewPhoto();
-    
-      
 
-// Déposer une photo sur le page modal publier les changements 
 
-const dropArea = document.getElementById("drop-area");
 const fileInput = document.getElementById("file-input");
-const addPhotoBtn = document.querySelector(".add-photo");
-
-const iconLabel = document.querySelector('label i.fa-solid.fa-image');
-const addPhotoLabel = document.querySelector('label.add-photo');
-const fileTypeSpan = document.querySelector('span.file-type');
-
-
-
-
-// Ajouter un gestionnaire d'événements pour le bouton "Ajouter photo"
-addPhotoBtn.addEventListener("click", function(e) {   
-  e.preventDefault();
-  fileInput.click();
-});
-
-// Ajouter un gestionnaire d'événements pour le champ de fichier
-fileInput.addEventListener("change" , function(e) {
-  const files = e.target.files;
-  if (files.length > 0) {
-    const file = files[0];
-    console.log(file);
-    // Afficher la photo dans le drop-area
-    const img = document.createElement("img");
-    img.src = URL.createObjectURL(file);
-    img.style.maxHeight = "100%";
-    img.style.maxWidth = "100%";
-    iconLabel.remove();
-    addPhotoLabel.remove();
-    fileTypeSpan.remove();
-    dropArea.appendChild(img);
-  }
-});
-
-
 
 const form = document.getElementById("formulaireAjoutPhoto");
 
@@ -567,7 +553,7 @@ form.addEventListener("submit", (event) => {
   const titre = document.getElementById("titre").value;
   const categorie = document.getElementById("categorie").value;
   const files = fileInput.files;
-  const boutonvalider = document.getElementById("boutonValider");
+  // const boutonvalider = document.getElementById("boutonValider");
 
   console.log(files);
   console.log(titre)
@@ -579,11 +565,11 @@ form.addEventListener("submit", (event) => {
     return;
   } 
   
-  if (titre && categorie && files.length) {
-    boutonvalider.style.backgroundColor = "#1D6154";
-    boutonvalider.style.color = "white";
-    closeModal;
-  }
+  // if (titre && categorie && files.length) {
+  //   boutonvalider.style.backgroundColor = "#1D6154";
+  //   boutonvalider.style.color = "white";
+  //   closeModal;
+  // }
   
 
 
@@ -652,7 +638,7 @@ form.addEventListener("submit", (event) => {
         }
 
         form.reset();
-        // fileInput.value = '';
+        fileInput.value = '';
 
         const azerty = document.getElementById("Azerty"); 
         azerty.remove();

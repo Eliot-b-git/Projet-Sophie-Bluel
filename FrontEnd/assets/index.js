@@ -484,6 +484,7 @@ const dropArea = document.getElementById("drop-area");
 const addPhotoBtn = document.querySelector(".add-photo");
 
 function addNewPhoto() {
+  
 
   // Recréer les éléments HTML pour ajouter une nouvelle photo
   const azertyDiv = document.createElement("div");
@@ -523,6 +524,7 @@ function addNewPhoto() {
     if (files.length > 0) {
       const file = files[0];
       console.log(file);
+      console.log(files)
       // Afficher la photo dans le drop-area
       const img = document.createElement("img");
       img.src = URL.createObjectURL(file);
@@ -552,6 +554,7 @@ form.addEventListener("submit", (event) => {
   // Vérifier que tous les champs sont remplis
   const titre = document.getElementById("titre").value;
   const categorie = document.getElementById("categorie").value;
+  const fileInput = document.getElementById("file-input");
   const files = fileInput.files;
   // const boutonvalider = document.getElementById("boutonValider");
 

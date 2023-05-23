@@ -1,5 +1,6 @@
 
 async function figureJSONData() {
+  
   const response = await fetch("http://localhost:5678/api/works");
   const jsonData = await response.json();
   console.log(jsonData);
@@ -39,8 +40,10 @@ async function figureJSONData() {
     counter0++;
 
   });
+}     
+figureJSONData();   
 
-
+async function categorieJSONData() {
   // Récupération des infos des différentes catégories
   const responseCategories = await fetch("http://localhost:5678/api/categories");
   const jsonDataCategories = await responseCategories.json();
@@ -66,6 +69,8 @@ async function figureJSONData() {
     
     counter++;
   });
+
+  
 
 
     // Récupération des catégories
@@ -137,171 +142,172 @@ async function figureJSONData() {
       activeFilter.style.backgroundColor = "#1D6154";
       activeFilter.style.color = "white";
     }
-
-    const token = localStorage.getItem('token');
-
-    // Vérifie si un token est présent dans le stockage local
-    function deleteToken() {
-      localStorage.removeItem('token');
-      updateLoginButton();
-    }      
-
-    function isLoggedIn() {
-      const token = localStorage.getItem('token');
-      return token !== null && token !== undefined;
-    }
+  }
+categorieJSONData();
 
 
 
+const token = localStorage.getItem('token');
 
+// Vérifie si un token est présent dans le stockage local
+function deleteToken() {
+  localStorage.removeItem('token');
+  updateLoginButton();
+}      
 
-    function updateLoginButton() {
-      const loginButton = document.querySelector('#loginButton');
-      if (isLoggedIn()) {
-        loginButton.textContent = 'logout';
-        loginButton.removeAttribute('href')
-        loginButton.addEventListener("click", deleteToken);
-        addBanniereCreateur();
-      } else {
-        removeBanniereCreateur();
-        loginButton.textContent = 'login';
-        loginButton.setAttribute('href', './assets/login.html');
-      }
-    }
-    // Création de la banniere mode administrateur
-    function addBanniereCreateur() {
-      
-      let header = document.querySelector('header');
-      let banniere = document.querySelector('#banniereCreateur');
-      let modeEdition = document.createElement("span");
-      let logopublier = document.createElement("span");
-      let icones = document.createElement('icones');
-      let publier = document.createElement('span');
-      let pagemodal = document.createElement('a')
-      
-      banniere = document.createElement("div");
-      banniere.id = "banniereCreateur";
-      
-      icones.classList = "fa-solid fa-pen-to-square";
-      icones.id = "ModifierBanniere";
+function isLoggedIn() {
+  const token = localStorage.getItem('token');
+  return token !== null && token !== undefined;
+}
 
-      
-      modeEdition.textContent = "Mode édition";
-      modeEdition.id = "modeEditions";
+function updateLoginButton() {
+  const loginButton = document.querySelector('#loginButton');
+  if (isLoggedIn()) {
+    loginButton.textContent = 'logout';
+    loginButton.removeAttribute('href')
+    loginButton.addEventListener("click", deleteToken);
+    addBanniereCreateur();
+  } else {
+    removeBanniereCreateur();
+    loginButton.textContent = 'login';
+    loginButton.setAttribute('href', './assets/login.html');
+  }
+}
+// Création de la banniere mode administrateur
+function addBanniereCreateur() {
+  
+  let header = document.querySelector('header');
+  let banniere = document.querySelector('#banniereCreateur');
+  let modeEdition = document.createElement("span");
+  let logopublier = document.createElement("span");
+  let icones = document.createElement('icones');
+  let publier = document.createElement('span');
+  let pagemodal = document.createElement('a')
+  
+  banniere = document.createElement("div");
+  banniere.id = "banniereCreateur";
+  
+  icones.classList = "fa-solid fa-pen-to-square";
+  icones.id = "ModifierBanniere";
 
-      publier.id = "publier";
-      publier.classList = "lienmodal2"
-      publier.textContent = "publier les changements";
+  
+  modeEdition.textContent = "Mode édition";
+  modeEdition.id = "modeEditions";
 
-      pagemodal.id = 'lienmodal';
-      pagemodal.classList = 'js-modal';
-      pagemodal.href = '#modal1';
+  publier.id = "publier";
+  publier.classList = "lienmodal2"
+  publier.textContent = "publier les changements";
 
-      banniere.appendChild(pagemodal);
-      header.prepend(banniere);
-      pagemodal.appendChild(icones);
-      pagemodal.appendChild(logopublier);
-      logopublier.appendChild(modeEdition);
-      banniere.appendChild(publier);
-    }
+  pagemodal.id = 'lienmodal';
+  pagemodal.classList = 'js-modal';
+  pagemodal.href = '#modal1';
+
+  banniere.appendChild(pagemodal);
+  header.prepend(banniere);
+  pagemodal.appendChild(icones);
+  pagemodal.appendChild(logopublier);
+  logopublier.appendChild(modeEdition);
+  banniere.appendChild(publier);
+}
 
     // Création de la page modale 
 
-    function removeBanniereCreateur() {
-      let banniere = document.querySelector('#banniereCreateur');
-      banniere.remove();
-    }
+function removeBanniereCreateur() {
+  let banniere = document.querySelector('#banniereCreateur');
+  banniere.remove();
+}
 
+// Appel de la fonction updateLoginButton lors du chargement de la page
+updateLoginButton();
+
+// Pages modals
+let modal = null
+
+  // Ouverture de la page modal 
+const openModal = function(e) {
+    e.preventDefault()
     
+    const  target = document.getElementById('modal1')
+    console.log(target)  
+    // Permet de rendre visisble la boite
+    target.style.display = 'block'
+    target.removeAttribute('aria-hidden')
+    target.setAttribute('aria-modal', 'true')
 
-    // Appel de la fonction updateLoginButton lors du chargement de la page
-    updateLoginButton();
+    modal = target
 
-    // Page modal
+    modal.addEventListener('click', closeModal)
+    //  Arret si click sur la croix
+    modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
+    //  Arret si click en dehors de la page modal
+    modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
+}
 
-    let modal = null
-
-    // Ouverture de la page modal 
-    const openModal = function(e) {
-        e.preventDefault()
-        
-        const  target = document.getElementById('modal1')
-        console.log(target)  
-        // Permet de rendre visisble la boite
-        target.style.display = 'block'
-        target.removeAttribute('aria-hidden')
-        target.setAttribute('aria-modal', 'true')
-
-        modal = target
-
-        modal.addEventListener('click', closeModal)
-        //  Arret si click sur la croix
-        modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
-        //  Arret si click en dehors de la page modal
-        modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
-    }
-    const openModal2 = function(e) {
-      e.preventDefault()
-      
-      const target = document.getElementById('modal2')
-      console.log(target)
-      target.style.display = 'block'
-      target.removeAttribute('aria-hidden')
-      target.setAttribute('aria-modal', 'true')
+const openModal2 = function(e) {
+  e.preventDefault()
   
-      modal = target
-  
-      modal.addEventListener('click', closeModal)
-      modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
-      modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
+  const target = document.getElementById('modal2')
+  console.log(target)
+  target.style.display = 'block'
+  target.removeAttribute('aria-hidden')
+  target.setAttribute('aria-modal', 'true')
+
+  modal = target
+
+  modal.addEventListener('click', closeModal)
+  modal.querySelector('.js-modal-close').addEventListener('click', closeModal)
+  modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
+}
+
+
+// Fermeture de la page modal 
+const closeModal = function (e) {
+  if (modal === null) return
+  e.preventDefault()
+  modal.style.display = "none"
+  modal.setAttribute('aria-hidden', 'true')
+  modal.removeAttribute('arial-modal')
+  modal.removeEventListener('click', closeModal)
+  modal.querySelector('.js-modal-close').removeEventListener('click', closeModal)
+  modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation)
+  modal = null
+}         
+// Permet d'eviter que lorsque on click dans la boite modal sa ne ferme pas 
+const stopPropagation = function (e) {
+  e.stopPropagation()
+}
+
+// Permet de pouvoir quitter la page modale avec echa
+window.addEventListener('keydown', function (e){
+  if (e.key === "Escape" || e.key === "Esc" ) {
+    closeModal(e)
   }
-  
 
-    // Fermeture de la page modal 
-    const closeModal = function (e) {
-      if (modal === null) return
-      e.preventDefault()
-      modal.style.display = "none"
-      modal.setAttribute('aria-hidden', 'true')
-      modal.removeAttribute('arial-modal')
-      modal.removeEventListener('click', closeModal)
-      modal.querySelector('.js-modal-close').removeEventListener('click', closeModal)
-      modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation)
-      modal = null
-    }         
-    // Permet d'eviter que lorsque on click dans la boite modal sa ne ferme pas 
-    const stopPropagation = function (e) {
-      e.stopPropagation()
-    }
+})
 
-    // Permet de pouvoir quitter la page modale avec echa
-    window.addEventListener('keydown', function (e){
-      if (e.key === "Escape" || e.key === "Esc" ) {
-        closeModal(e)
-      }
+// Selectionner l'aside 
+const premiermodifier = document.getElementById('premiermodifier')
+premiermodifier.addEventListener('click', openModal)
 
-    })
+const secondmodifier = document.getElementById('secondmodifier')
+secondmodifier.addEventListener('click', openModal)
+secondmodifier.addEventListener('click', updateGallery())
 
-    // Selectionner l'aside 
-    const premiermodifier = document.getElementById('premiermodifier')
-    premiermodifier.addEventListener('click', openModal)
-    
+// Lorsque on clique sur ajout photo sa ouvre la deuxiéme page modal et ferme la premiére
+const addPhoto = document.getElementById("addPhoto");
+addPhoto.addEventListener("click", closeModal);
+addPhoto.addEventListener("click", openModal2);
 
-
-    const secondmodifier = document.getElementById('secondmodifier')
-    secondmodifier.addEventListener('click', openModal)
-    secondmodifier.addEventListener('click', updateGallery(jsonData))
-
-    // Lorsque on clique sur ajout photo sa ouvre la deuxiéme page modal et ferme la premiére
-    const addPhoto = document.getElementById("addPhoto");
-    addPhoto.addEventListener("click", closeModal);
-    addPhoto.addEventListener("click", openModal2);
-
-    
+let counter0 = 0;
 // Définition de la fonction qui met à jour la galerie avec les données fournies
-function updateGallery(jsonData) {
-  let counter1 = 0;
+async function updateGallery() {
   // Ajout de l'emplacement des photos
+  
+  const response = await fetch("http://localhost:5678/api/works");
+  const jsonData = await response.json();
+
+
+  
   jsonData.forEach(function(element) {
     // création d'un élément figure
     let figure = document.createElement("figure");
@@ -327,12 +333,12 @@ function updateGallery(jsonData) {
 
     figure.appendChild(iconePoubelle)
 
-    figure.classList = 'a' + counter1;
+    figure.id = 'aa' + counter0;
+    figure.classList = 'a' + counter0;
     iconePoubelle.dataset.api = element.id;
 
     // Ajout d'un gestionnaire d'événements "click" sur l'icône poubelle
     iconePoubelle.addEventListener('click', function() {
-      const poubelle = document.querySelectorAll('.poubelle');
 
        id = iconePoubelle.dataset.api
       // Envoi de la requête DELETE à l'API pour supprimer l'image
@@ -345,13 +351,14 @@ function updateGallery(jsonData) {
       })
       .then(response => {
         if (response.ok) {
+          let gallery = document.querySelectorAll(".gallery figure");
+          gallery.forEach(function(element) {
+            element.remove();
+          });
+          
           // Suppression de la figure et de l'image
           figure.remove();
-          const classe = figure.getAttribute('class');
-          const img = document.querySelector(`.gallery .${classe}`);
-          console.log(img);
-          console.log(classe);
-          img.remove();
+          figureJSONData();
           // Mettre à jour la liste des poubelles
           updatePoubelles(document.querySelectorAll('.poubelle'));
         } else {
@@ -363,8 +370,9 @@ function updateGallery(jsonData) {
         alert('Une erreur est survenue lors de la suppression de l\'image');
       });
       console.log('Icône poubelle cliquée');
-    });
 
+    });
+    
     
     // Extraction et du texte d'un figcaption
     let text = document.createTextNode('éditer');
@@ -380,7 +388,8 @@ function updateGallery(jsonData) {
     // Ajout de la figure en tant qu'enfant dans de la class gallery
     gallery.appendChild(figure);
 
-    counter1++;
+    counter0++;
+
   });
 }
 
@@ -388,269 +397,274 @@ function updateGallery(jsonData) {
 
 
 
-    // Supression de l'image 
 
-    // Définition de la fonction qui met à jour la liste des poubelles
-    function updatePoubelles(poubelles) {
-      poubelles.forEach(poubelle => {
-        poubelle.addEventListener('click', () => {
-          const figure = poubelle.parentNode;
-          const classe = figure.getAttribute('class');
-          const img = document.querySelector(`.gallery .${classe}`);
-          figure.remove();
-          if (img) {
-            img.remove();
-          }
-          // Mettre à jour la liste des poubelles
-          updatePoubelles(document.querySelectorAll('.poubelle'));
-        });
-      });
-    }
+// Supression de l'image 
+
+// Définition de la fonction qui met à jour la liste des poubelles
+function updatePoubelles(poubelles) {
+  poubelles.forEach(poubelle => {
+    poubelle.addEventListener('click', () => {
+      const figure = poubelle.parentNode;
+      const classe = figure.getAttribute('class');
+      const img = document.querySelector(`.gallery .${classe}`);
+      figure.remove();
+      if (img) {
+        img.remove();
+      }
+      // Mettre à jour la liste des poubelles
+      updatePoubelles(document.querySelectorAll('.poubelle'));
+    });
+  });
+}
     
 
-    // Récupération de toutes les poubelles
-    const poubelles = document.querySelectorAll('.poubelle');
+// Récupération de toutes les poubelles
+const poubelles = document.querySelectorAll('.poubelle');
 
-    // Boucle sur toutes les poubelles
-    poubelles.forEach(poubelle => {
-      // Ajout d'un écouteur d'événement "click"
-      poubelle.addEventListener('click', () => {
-        // Récupération de l'élément parent (la figure)
-        const figure = poubelle.parentNode;
-        // Récupération de l'attribut "class" de la figure
-        const classe = figure.getAttribute('class');
-        // Récupération de l'identifiant de l'image
-        const id = poubelle.dataset.api;
-        
-        // Envoi de la requête DELETE à l'API pour supprimer l'image
-        const token = localStorage.getItem('token');
-        fetch(`http://localhost:5678/api/works/${id}`, {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        .then(response => {
-          if (response.ok) {
-            // Suppression de la figure et de l'image
-            figure.remove();
-            const img = document.querySelector(`.gallery .${classe}`);
-            if (img) {
-              img.remove();
-            }
-            // Mettre à jour la liste des poubelles
-            updatePoubelles(document.querySelectorAll('.poubelle'));
-          } else {
-            throw new Error('Erreur lors de la suppression de l\'image');
-          }
-        })
-        .catch(error => {
-          console.error(error);
-          alert('Une erreur est survenue lors de la suppression de l\'image');
-        });
-      });
+// Boucle sur toutes les poubelles
+// poubelles.forEach(poubelle => {
+//   // Ajout d'un écouteur d'événement "click"
+//   poubelle.addEventListener('click', () => {
+//     // Récupération de l'élément parent (la figure)
+//     const figure = poubelle.parentNode;
+//     // Récupération de l'attribut "class" de la figure
+//     const classe = figure.getAttribute('class');
+//     // Récupération de l'identifiant de l'image
+//     const id = poubelle.dataset.api;
+    
+//     // Envoi de la requête DELETE à l'API pour supprimer l'image
+//     const token = localStorage.getItem('token');
+//     fetch(`http://localhost:5678/api/works/${id}`, {
+//       method: 'DELETE',
+//       headers: {
+//         Authorization: `Bearer ${token}`
+//       }
+//     })
+//     .then(response => {
+//       if (response.ok) {
+//         // Suppression de la figure et de l'image
+//         figure.remove();
+//         const img = document.querySelector(`.gallery .${classe}`);
+//         if (img) {
+//           img.remove();
+//         }
+//         // Mettre à jour la liste des poubelles
+//         updatePoubelles(document.querySelectorAll('.poubelle'));
+//       } else {
+//         throw new Error('Erreur lors de la suppression de l\'image');
+//       }
+//     })
+//     .catch(error => {
+//       console.error(error);
+//       alert('Une erreur est survenue lors de la suppression de l\'image');
+//     });
+//   });
+// });
+
+
+function refreshGallery() {
+  fetch('http://localhost:5678/api/works')
+    .then(response => response.json())
+    .then(data => {
+      // Appel de la fonction updateGallery avec les nouvelles données
+      updateGallery(data);
+      
+
+    })
+    .catch(error => {
+      console.error(error);
+      alert('Une erreur est survenue lors de la récupération des images');
     });
-
-
-    function refreshGallery() {
-      fetch('http://localhost:5678/api/works')
-        .then(response => response.json())
-        .then(data => {
-          // Appel de la fonction updateGallery avec les nouvelles données
-          updateGallery(data);
-          
-
-        })
-        .catch(error => {
-          console.error(error);
-          alert('Une erreur est survenue lors de la récupération des images');
-        });
-    }
+}
                 
 
-    function addNewPhoto() {
+function addNewPhoto() {
+
+  // Recréer les éléments HTML pour ajouter une nouvelle photo
+  const azertyDiv = document.createElement("div");
+  azertyDiv.id = "Azerty";
+
+  const newFileInput = document.createElement("input");
+  newFileInput.type = "file";
+  newFileInput.id = "file-input";
+  newFileInput.accept = ".jpg, .jpeg, .png";
+  newFileInput.multiple = true;
+
+  const newIconLabel = document.createElement("label");
+  const newIcon = document.createElement("i");
+  newIcon.classList.add("fa-solid", "fa-image");
+  newIconLabel.appendChild(newIcon);
+
+  const newAddPhotoLabel = document.createElement("label");
+  newAddPhotoLabel.htmlFor = "file-input";
+  newAddPhotoLabel.classList.add("add-photo");
+  newAddPhotoLabel.textContent = "+ Ajouter photo";
+
+  const newFileTypeSpan = document.createElement("span");
+  newFileTypeSpan.classList.add("file-type");
+  newFileTypeSpan.textContent = "JPG, PNG : 4 Mo max";
+
+  azertyDiv.appendChild(newFileInput);
+  azertyDiv.appendChild(newIconLabel);
+  azertyDiv.appendChild(newAddPhotoLabel);
+  azertyDiv.appendChild(newFileTypeSpan);
+
+  // Ajouter le nouvel élément HTML à la page
+  const dropArea = document.getElementById("drop-area");
+  dropArea.appendChild(azertyDiv);
+}
     
-      // Recréer les éléments HTML pour ajouter une nouvelle photo
-      const azertyDiv = document.createElement("div");
-      azertyDiv.id = "Azerty";
-    
-      const newFileInput = document.createElement("input");
-      newFileInput.type = "file";
-      newFileInput.id = "file-input";
-      newFileInput.accept = ".jpg, .jpeg, .png";
-      newFileInput.multiple = true;
-    
-      const newIconLabel = document.createElement("label");
-      const newIcon = document.createElement("i");
-      newIcon.classList.add("fa-solid", "fa-image");
-      newIconLabel.appendChild(newIcon);
-    
-      const newAddPhotoLabel = document.createElement("label");
-      newAddPhotoLabel.htmlFor = "file-input";
-      newAddPhotoLabel.classList.add("add-photo");
-      newAddPhotoLabel.textContent = "+ Ajouter photo";
-    
-      const newFileTypeSpan = document.createElement("span");
-      newFileTypeSpan.classList.add("file-type");
-      newFileTypeSpan.textContent = "JPG, PNG : 4 Mo max";
-    
-      azertyDiv.appendChild(newFileInput);
-      azertyDiv.appendChild(newIconLabel);
-      azertyDiv.appendChild(newAddPhotoLabel);
-      azertyDiv.appendChild(newFileTypeSpan);
-    
-      // Ajouter le nouvel élément HTML à la page
-      const dropArea = document.getElementById("drop-area");
-      dropArea.appendChild(azertyDiv);
-    }
-    
-    // Appeler la fonction au besoin
-    addNewPhoto();
+// Appeler la fonction au besoin
+addNewPhoto();
     
       
 
-      // Déposer une photo sur le page modal publier les changements 
+// Déposer une photo sur le page modal publier les changements 
 
-      const dropArea = document.getElementById("drop-area");
-      const fileInput = document.getElementById("file-input");
-      const addPhotoBtn = document.querySelector(".add-photo");
+const dropArea = document.getElementById("drop-area");
+const fileInput = document.getElementById("file-input");
+const addPhotoBtn = document.querySelector(".add-photo");
 
-      const iconLabel = document.querySelector('label i.fa-solid.fa-image');
-      const addPhotoLabel = document.querySelector('label.add-photo');
-      const fileTypeSpan = document.querySelector('span.file-type');
+const iconLabel = document.querySelector('label i.fa-solid.fa-image');
+const addPhotoLabel = document.querySelector('label.add-photo');
+const fileTypeSpan = document.querySelector('span.file-type');
 
-     
 
-      
-      // Ajouter un gestionnaire d'événements pour le bouton "Ajouter photo"
-      addPhotoBtn.addEventListener("click", function(e) {   
-        e.preventDefault();
-        fileInput.click();
-      });
-      
-      // Ajouter un gestionnaire d'événements pour le champ de fichier
-      fileInput.addEventListener("change", function(e) {
-        const files = e.target.files;
-        if (files.length > 0) {
-          const file = files[0];
-          // Afficher la photo dans le drop-area
-          const img = document.createElement("img");
-          img.src = URL.createObjectURL(file);
-          img.style.maxHeight = "100%";
-          img.style.maxWidth = "100%";
-          iconLabel.remove();
-          addPhotoLabel.remove();
-          fileTypeSpan.remove();
-          dropArea.appendChild(img);
+
+
+// Ajouter un gestionnaire d'événements pour le bouton "Ajouter photo"
+addPhotoBtn.addEventListener("click", function(e) {   
+  e.preventDefault();
+  fileInput.click();
+});
+
+// Ajouter un gestionnaire d'événements pour le champ de fichier
+fileInput.addEventListener("change" , function(e) {
+  const files = e.target.files;
+  if (files.length > 0) {
+    const file = files[0];
+    console.log(file);
+    // Afficher la photo dans le drop-area
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+    img.style.maxHeight = "100%";
+    img.style.maxWidth = "100%";
+    iconLabel.remove();
+    addPhotoLabel.remove();
+    fileTypeSpan.remove();
+    dropArea.appendChild(img);
+  }
+});
+
+
+
+const form = document.getElementById("formulaireAjoutPhoto");
+
+form.addEventListener("submit", (event) => {
+  event.preventDefault(); // Empêcher l'envoi normal du formulaire
+
+  // Vérifier que tous les champs sont remplis
+  const titre = document.getElementById("titre").value;
+  const categorie = document.getElementById("categorie").value;
+  const files = fileInput.files;
+  const boutonvalider = document.getElementById("boutonValider");
+
+  console.log(files);
+  console.log(titre)
+
+
+  console.log(categorie)
+  if (!titre || !categorie || !files.length) {
+    alert("Veuillez remplir tous les champs !");
+    return;
+  } 
+  
+  if (titre && categorie && files.length) {
+    boutonvalider.style.backgroundColor = "#1D6154";
+    boutonvalider.style.color = "white";
+    closeModal;
+  }
+  
+
+
+  // Attribuer l'ID de la catégorie en fonction de son nom
+  let categoryId;
+  if (categorie === "Objets") {
+    categoryId = 1;
+  } else if (categorie === "Appartements") {
+    categoryId = 2;
+  }
+
+  // // Créer un objet pour la catégorie
+  // const categoryObj = {
+  //   id: categoryId,
+  //   name: categorie
+  // };
+
+
+  // Créer un objet FormData pour envoyer les données du formulaire
+  const formData = new FormData();
+  formData.append("title", titre);
+  formData.append("category", categoryId);
+  if (files && files.length > 0) {
+      formData.append("image", files[0]);
+  }
+
+  const token = localStorage.getItem('token');
+
+  fetch("http://localhost:5678/api/works", {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
+    body: formData
+  })
+  .then((response) => response.json())
+  .then((data) => {
+
+        // Créer un nouvel élément figure pour le projet ajouté
+        const newFigure = document.createElement('figure');
+        let gallery = document.querySelector(".gallery");
+
+
+        newFigure.id = 'aa' + newFigure;
+        newFigure.classList = 'a' + counter0;
+
+        const newImage = document.createElement('img');
+        newImage.src = data.imageUrl;
+        newImage.alt = data.title;
+        newFigure.appendChild(newImage);
+
+        const newCaption = document.createElement('figcaption');
+        const newCaptionText = document.createTextNode(data.title);
+        newCaption.appendChild(newCaptionText);
+        newFigure.appendChild(newCaption);
+
+        // Ajouter le nouvel élément à la galerie
+        gallery.appendChild(newFigure);
+        console.log(data); 
+        // Afficher la réponse de l'API dans la console  
+
+        // Réinitialiser les champs du formulaire
+        const image = document.querySelector("#drop-area img");
+        if (image) {
+          image.remove();
         }
-      });
-      
 
+        form.reset();
+        // fileInput.value = '';
 
-      const form = document.getElementById("formulaireAjoutPhoto");
+        const azerty = document.getElementById("Azerty"); 
+        azerty.remove();
 
-      form.addEventListener("submit", (event) => {
-        event.preventDefault(); // Empêcher l'envoi normal du formulaire
-      
-        // Vérifier que tous les champs sont remplis
-        const titre = document.getElementById("titre").value;
-        const categorie = document.getElementById("categorie").value;
-        const files = fileInput.files;
-        const boutonvalider = document.getElementById("boutonValider");
+        addNewPhoto();
 
-        console.log(files);
-        console.log(titre)
-
-      
-        console.log(categorie)
-        if (!titre || !categorie || !files.length) {
-          alert("Veuillez remplir tous les champs !");
-          return;
-        } 
+        const lesphotos = document.querySelectorAll(".lesPhotos figure");
+        lesphotos.forEach((figure) => {
+          figure.remove();
+        });
+        refreshGallery();
         
-        if (titre && categorie && files.length) {
-          boutonvalider.style.backgroundColor = "#1D6154";
-          boutonvalider.style.color = "white";
-          closeModal;
-        }
-        
-
-
-        // Attribuer l'ID de la catégorie en fonction de son nom
-        let categoryId;
-        if (categorie === "Objets") {
-          categoryId = 1;
-        } else if (categorie === "Appartements") {
-          categoryId = 2;
-        }
-
-        // // Créer un objet pour la catégorie
-        // const categoryObj = {
-        //   id: categoryId,
-        //   name: categorie
-        // };
-
-      
-        // Créer un objet FormData pour envoyer les données du formulaire
-        const formData = new FormData();
-        formData.append("title", titre);
-        formData.append("category", categoryId);
-        if (files && files.length > 0) {
-            formData.append("image", files[0]);
-        }
-      
-        const token = localStorage.getItem('token');
-      
-        fetch("http://localhost:5678/api/works", {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`
-          },
-          body: formData
-        })
-        .then((response) => response.json())
-        .then((data) => {
-              // Créer un nouvel élément figure pour le projet ajouté
-              const newFigure = document.createElement('figure');
-              let gallery = document.querySelector(".gallery");
-
-              const newImage = document.createElement('img');
-              newImage.src = data.imageUrl;
-              newImage.alt = data.title;
-              newFigure.appendChild(newImage);
-
-              const newCaption = document.createElement('figcaption');
-              const newCaptionText = document.createTextNode(data.title);
-              newCaption.appendChild(newCaptionText);
-              newFigure.appendChild(newCaption);
-
-              // Ajouter le nouvel élément à la galerie
-              gallery.appendChild(newFigure);
-              console.log(data); 
-              // Afficher la réponse de l'API dans la console  
-
-              // Réinitialiser les champs du formulaire
-              const image = document.querySelector("#drop-area img");
-              if (image) {
-                image.remove();
-              }
-
-              form.reset();
-              fileInput.value = '';
-
-              const azerty = document.getElementById("Azerty"); 
-              azerty.remove();
-
-              addNewPhoto();
-
-              const lesphotos = document.querySelectorAll(".lesPhotos figure");
-              lesphotos.forEach((figure) => {
-                figure.remove();
-              });
-              refreshGallery();
-             
-        })
-        .catch((error) => console.error(error));
-      });
-    }        
-figureJSONData()
+  })
+  .catch((error) => console.error(error));
+});

@@ -215,7 +215,7 @@ header{
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	margin-top: 00px;
+	margin-top: 20px;
 }
 #banniereCreateur{
 	color: #1D6154;
@@ -226,6 +226,12 @@ header{
 	padding-top: 20px;
 	width: 100%;
 	text-align: center;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
 
 }
 #modeEditions{
@@ -292,6 +298,13 @@ header{
 	font-size: 1.5em;
 }
 
+.croix1{
+	margin-top: 15px;
+	margin-bottom: 25px;
+	margin-left: 95%;
+	font-size: 1.5em;
+}
+
 .fleche{
 	margin-top: 15px;
 	margin-bottom: 25px;
@@ -339,19 +352,19 @@ h3
 	color: gray;
 }
 .lesPhotos{
+	height: 380px;
 	display: grid;
 	grid-template-columns: 18% 18% 18% 18% 18%;
     gap:2%;    
 	object-fit: cover;
 	margin-left: 15%;
 	margin-right: 15%;
+	overflow: hidden;
 }
 
 .imgModal{
-	width: 100%;
+	width: 99%;
 	object-fit: cover;
-
-
 }
 
 .Editer{

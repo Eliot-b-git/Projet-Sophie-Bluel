@@ -277,6 +277,10 @@ const stopPropagation = function (e) {
   e.stopPropagation()
 }
 
+const fleche = document.querySelector('.fleche');
+fleche.addEventListener("click", closeModal);
+fleche.addEventListener("click", openModal);
+
 // Permet de pouvoir quitter la page modale avec echa
 window.addEventListener('keydown', function (e){
   if (e.key === "Escape" || e.key === "Esc" ) {
@@ -653,6 +657,11 @@ form.addEventListener("submit", (event) => {
           figure.remove();
         });
         refreshGallery();
+
+
+        const filtres = document.querySelectorAll(".filtres");
+        filtres.remove();
+        categorieJSONData();
         
   })
   .catch((error) => console.error(error));

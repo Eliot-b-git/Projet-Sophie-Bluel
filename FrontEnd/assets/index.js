@@ -70,79 +70,77 @@ async function categorieJSONData() {
     counter++;
   });
 
+  // Récupération des catégories
+  let filtre1 = document.getElementById("0");
+  let filtre2 = document.getElementById("1");
+  let filtre3 = document.getElementById("2");
+  let filtre4 = document.getElementById("Tous");
+
+  filtre4.addEventListener("click", function() {
+    // Affichage de toutes les images
+    images.forEach(function(image) {
+      image.style.display = "block";
+    });
+    setActiveFilter(filtre4);
+  });
   
 
+  // Ajout d'un événement "click" à chaque catégorie
+  filtre1.addEventListener("click", function() {
+    filterGallery(1);
+    setActiveFilter(filtre1);
+  });
 
-    // Récupération des catégories
-    let filtre1 = document.getElementById("0");
-    let filtre2 = document.getElementById("1");
-    let filtre3 = document.getElementById("2");
-    let filtre4 = document.getElementById("Tous");
+  filtre2.addEventListener("click", function() {
+    filterGallery(2);
+    setActiveFilter(filtre2);
+  });
 
-    filtre4.addEventListener("click", function() {
-      // Affichage de toutes les images
-      images.forEach(function(image) {
-        image.style.display = "block";
-      });
-      setActiveFilter(filtre4);
+  filtre3.addEventListener("click", function() {
+    filterGallery(3);
+    setActiveFilter(filtre3);
+  });
+
+  let images = document.querySelectorAll(".gallery figure");
+
+
+  function filterGallery(selectedCategorie) {
+    // Parcours de toutes les images
+    images.forEach(function(image) {
+      // Récupération de la catégorie de l'image
+      let categorie = image.getAttribute("data-categorie");
+      // Vérification si l'image correspond à la catégorie sélectionnée
+      if (categorie == selectedCategorie) {
+        // Affichage de l'image
+        image.style.display = "block"; 
+      } else {
+        // Cachage de l'image
+        image.style.display = "none";
+      } 
     });
-    
 
-    // Ajout d'un événement "click" à chaque catégorie
-    filtre1.addEventListener("click", function() {
-      filterGallery(1);
-      setActiveFilter(filtre1);
-    });
-
-    filtre2.addEventListener("click", function() {
-      filterGallery(2);
-      setActiveFilter(filtre2);
-    });
-
-    filtre3.addEventListener("click", function() {
-      filterGallery(3);
-      setActiveFilter(filtre3);
-    });
-
-    let images = document.querySelectorAll(".gallery figure");
-
-
-    function filterGallery(selectedCategorie) {
-      // Parcours de toutes les images
-      images.forEach(function(image) {
-        // Récupération de la catégorie de l'image
-        let categorie = image.getAttribute("data-categorie");
-        // Vérification si l'image correspond à la catégorie sélectionnée
-        if (categorie == selectedCategorie) {
-          // Affichage de l'image
-          image.style.display = "block"; 
-        } else {
-          // Cachage de l'image
-          image.style.display = "none";
-        } 
-      });
-
-    }
-    // Fonction pour définir un filtre actif
-    function setActiveFilter(activeFilter) {
-
-      // Réinitialisation de la backgroundColor de tous les filtres
-      filtre1.style.backgroundColor = "";
-      filtre2.style.backgroundColor = "";
-      filtre3.style.backgroundColor = "";
-      filtre4.style.backgroundColor = "";
-
-      // Réinitialisation de la couleur de tous les filtres
-      filtre1.style.color = "";
-      filtre2.style.color = "";
-      filtre3.style.color = "";
-      filtre4.style.color = "";
-
-      // Définition de la couleur du filtre actif
-      activeFilter.style.backgroundColor = "#1D6154";
-      activeFilter.style.color = "white";
-    }
   }
+    // Fonction pour définir un filtre actif
+  function setActiveFilter(activeFilter) {
+
+    // Réinitialisation de la backgroundColor de tous les filtres
+    filtre1.style.backgroundColor = "";
+    filtre2.style.backgroundColor = "";
+    filtre3.style.backgroundColor = "";
+    filtre4.style.backgroundColor = "";
+
+    // Réinitialisation de la couleur de tous les filtres
+    filtre1.style.color = "";
+    filtre2.style.color = "";
+    filtre3.style.color = "";
+    filtre4.style.color = "";
+
+    // Définition de la couleur du filtre actif
+    activeFilter.style.backgroundColor = "#1D6154";
+    activeFilter.style.color = "white";
+  }
+  filterGallery(selectedCategorie);
+}
 categorieJSONData();
 
 
@@ -365,6 +363,12 @@ async function updateGallery() {
           figureJSONData();
           // Mettre à jour la liste des poubelles
           updatePoubelles(document.querySelectorAll('.poubelle'));
+          const filtres = document.querySelectorAll(".filtres");
+          filtres.forEach(function(filtre) {
+            filtre.remove();
+          });
+          categorieJSONData();
+  
         } else {
           throw new Error('Erreur lors de la suppression de l\'image');
         }
@@ -586,6 +590,8 @@ form.addEventListener("submit", (event) => {
     categoryId = 1;
   } else if (categorie === "Appartements") {
     categoryId = 2;
+  } else if (categorie === "Hotels & Restaurant") {
+    categoryId = 3;
   }
 
   // // Créer un objet pour la catégorie
@@ -657,11 +663,9 @@ form.addEventListener("submit", (event) => {
           figure.remove();
         });
         refreshGallery();
+        
 
 
-        const filtres = document.querySelectorAll(".filtres");
-        filtres.remove();
-        categorieJSONData();
         
   })
   .catch((error) => console.error(error));

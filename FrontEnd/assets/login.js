@@ -1,6 +1,7 @@
 const formulaire = document.querySelector('#formulaireLogin');
 
 formulaire.addEventListener('submit', async (event) => {
+  // Empêcher le comportement par default (recharger la page)
   event.preventDefault();
 
   const email = document.querySelector('#email').value;
@@ -13,14 +14,14 @@ formulaire.addEventListener('submit', async (event) => {
       headers: {
         'Content-Type': 'application/json'
       },
-    //  Permet de transformer  
+    //  Permet de transformer les données en une chaîne JSON  
       body: JSON.stringify({
         email: email,
         password: password
       })
     });
 
-    if (!response.ok) {
+    if (!response.ok)  {
       // Si la réponse n'est pas OK, on lance une erreur
       throw new Error('Identifiants invalides');
     }
@@ -31,10 +32,14 @@ formulaire.addEventListener('submit', async (event) => {
     console.log(localStorage.getItem('token'));
     // Redirection vers l'index si tout s'est bien passé
     window.location.href = '../index.html';
-  } catch (error) {
+
+  } 
+  
+  catch (error) {
     alert(error.message);
     // Affichage de l'erreur dans l'interface
     const errorMessage = document.querySelector('#errorMessage');
     errorMessage.textContent = error.message;
   }
+
 });

@@ -1,0 +1,26 @@
+{
+  "name": "projet-sophie-bluel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eliot-b-git/Projet-Sophie-Bluel.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Eliot-b-git/Projet-Sophie-Bluel/issues"
+  },
+  "homepage": "https://github.com/Eliot-b-git/Projet-Sophie-Bluel#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "swagger-ui-express": "^5.0.0",
+    "yamljs": "^0.3.0"
+  }
+}

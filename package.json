@@ -6,8 +6,10 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
-  },
+    "build": "webpack",
+    "deploy": "netlify deploy --dir=dist"  
+  }
+  ,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Eliot-b-git/Projet-Sophie-Bluel.git"
